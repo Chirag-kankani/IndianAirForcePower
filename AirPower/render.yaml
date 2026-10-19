@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: airpower-platform
+    env: docker
+    plan: free
+    region: oregon
+    dockerfilePath: Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: true

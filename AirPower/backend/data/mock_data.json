@@ -1,0 +1,1852 @@
+{
+  "weapons_inventory": [
+    {
+      "weapon_id": "WEP_ASTRA_MK1",
+      "name": "Astra Mk-1 BVR-AAM",
+      "category": "AIR_TO_AIR_MISSILE",
+      "guidance_type": "ACTIVE_RADAR",
+      "weight_kg": 154.0,
+      "effective_range_km": 110.0,
+      "stock_count": 36,
+      "effective_against": []
+    },
+    {
+      "weapon_id": "WEP_SPICE_2000",
+      "name": "SPICE-2000 Penetrator PGB",
+      "category": "PRECISION_GUIDED_BOMB",
+      "guidance_type": "GPS_ELECTRO_OPTICAL",
+      "weight_kg": 900.0,
+      "effective_range_km": 60.0,
+      "stock_count": 24,
+      "effective_against": [
+        "HARDENED_BUNKER",
+        "AIRFIELD"
+      ]
+    },
+    {
+      "weapon_id": "WEP_RUDRAM_1",
+      "name": "Rudram-1 NGARM",
+      "category": "ANTI_RADIATION_MISSILE",
+      "guidance_type": "PASSIVE_HOMING",
+      "weight_kg": 140.0,
+      "effective_range_km": 150.0,
+      "stock_count": 22,
+      "effective_against": [
+        "RADAR_STATION"
+      ]
+    },
+    {
+      "weapon_id": "WEP_BRAHMOS_A",
+      "name": "BrahMos-A ALCM",
+      "category": "ANTI_SHIP",
+      "guidance_type": "ACTIVE_RADAR",
+      "weight_kg": 2500.0,
+      "effective_range_km": 300.0,
+      "stock_count": 12,
+      "effective_against": [
+        "NAVAL_VESSEL"
+      ]
+    },
+    {
+      "weapon_id": "WEP_HAMMER_AASM",
+      "name": "Hammer AASM SBU-38",
+      "category": "PRECISION_GUIDED_BOMB",
+      "guidance_type": "GPS_ELECTRO_OPTICAL",
+      "weight_kg": 330.0,
+      "effective_range_km": 70.0,
+      "stock_count": 30,
+      "effective_against": [
+        "CONVOY",
+        "HARDENED_BUNKER",
+        "AIRFIELD"
+      ]
+    },
+    {
+      "weapon_id": "WEP_PYTHON_5",
+      "name": "Python-5 WVRAAM",
+      "category": "AIR_TO_AIR_MISSILE",
+      "guidance_type": "PASSIVE_HOMING",
+      "weight_kg": 105.0,
+      "effective_range_km": 20.0,
+      "stock_count": 40,
+      "effective_against": []
+    }
+  ],
+  "aircraft_fleet": [
+    {
+      "aircraft_id": "AC_RAFALE_01",
+      "model": "Rafale EH",
+      "callsign": "GARUDA-01",
+      "home_base_id": "BASE_TRISHUL",
+      "status": "READY",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 95.0,
+      "max_fuel_capacity_liters": 6800.0,
+      "max_takeoff_weight_kg": 24500.0,
+      "empty_weight_kg": 10300.0,
+      "hardpoints_count": 14,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_HAMMER_AASM",
+          "quantity": 4
+        },
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 35,
+      "fuel_burn_liters_per_km": 3.8,
+      "cruise_speed_kmph": 920.0,
+      "current_fuel_liters": 6460.0,
+      "max_range_km": 1700.0,
+      "total_equipped_weapons_count": 8
+    },
+    {
+      "aircraft_id": "AC_RAFALE_02",
+      "model": "Rafale EH",
+      "callsign": "GARUDA-02",
+      "home_base_id": "BASE_TRISHUL",
+      "status": "READY",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 92.0,
+      "max_fuel_capacity_liters": 6800.0,
+      "max_takeoff_weight_kg": 24500.0,
+      "empty_weight_kg": 10300.0,
+      "hardpoints_count": 14,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_SPICE_2000",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_RUDRAM_1",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 35,
+      "fuel_burn_liters_per_km": 3.8,
+      "cruise_speed_kmph": 920.0,
+      "current_fuel_liters": 6256.0,
+      "max_range_km": 1646.32,
+      "total_equipped_weapons_count": 6
+    },
+    {
+      "aircraft_id": "AC_RAFALE_03",
+      "model": "Rafale DH",
+      "callsign": "GARUDA-03",
+      "home_base_id": "BASE_GARUDA",
+      "status": "READY",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 88.0,
+      "max_fuel_capacity_liters": 6800.0,
+      "max_takeoff_weight_kg": 24500.0,
+      "empty_weight_kg": 10600.0,
+      "hardpoints_count": 14,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_HAMMER_AASM",
+          "quantity": 4
+        },
+        {
+          "weapon_id": "WEP_RUDRAM_1",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 35,
+      "fuel_burn_liters_per_km": 3.8,
+      "cruise_speed_kmph": 920.0,
+      "current_fuel_liters": 5984.0,
+      "max_range_km": 1574.74,
+      "total_equipped_weapons_count": 8
+    },
+    {
+      "aircraft_id": "AC_RAFALE_04",
+      "model": "Rafale EH",
+      "callsign": "GARUDA-04",
+      "home_base_id": "BASE_GARUDA",
+      "status": "MAINTENANCE",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 50.0,
+      "max_fuel_capacity_liters": 6800.0,
+      "max_takeoff_weight_kg": 24500.0,
+      "empty_weight_kg": 10300.0,
+      "hardpoints_count": 14,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_SPICE_2000",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 120,
+      "fuel_burn_liters_per_km": 3.8,
+      "cruise_speed_kmph": 920.0,
+      "current_fuel_liters": 3400.0,
+      "max_range_km": 894.74,
+      "total_equipped_weapons_count": 2
+    },
+    {
+      "aircraft_id": "AC_SU30_01",
+      "model": "Su-30MKI",
+      "callsign": "TRIDENT-01",
+      "home_base_id": "BASE_VAYU",
+      "status": "READY",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 95.0,
+      "max_fuel_capacity_liters": 12000.0,
+      "max_takeoff_weight_kg": 38800.0,
+      "empty_weight_kg": 18400.0,
+      "hardpoints_count": 12,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_RUDRAM_1",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_SPICE_2000",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 4
+        }
+      ],
+      "turnaround_time_mins": 45,
+      "fuel_burn_liters_per_km": 5.4,
+      "cruise_speed_kmph": 950.0,
+      "current_fuel_liters": 11400.0,
+      "max_range_km": 2111.11,
+      "total_equipped_weapons_count": 8
+    },
+    {
+      "aircraft_id": "AC_SU30_02",
+      "model": "Su-30MKI",
+      "callsign": "TRIDENT-02",
+      "home_base_id": "BASE_VAYU",
+      "status": "READY",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 92.0,
+      "max_fuel_capacity_liters": 12000.0,
+      "max_takeoff_weight_kg": 38800.0,
+      "empty_weight_kg": 18400.0,
+      "hardpoints_count": 12,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_SPICE_2000",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_HAMMER_AASM",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 4
+        }
+      ],
+      "turnaround_time_mins": 45,
+      "fuel_burn_liters_per_km": 5.4,
+      "cruise_speed_kmph": 950.0,
+      "current_fuel_liters": 11040.0,
+      "max_range_km": 2044.44,
+      "total_equipped_weapons_count": 8
+    },
+    {
+      "aircraft_id": "AC_SU30_03",
+      "model": "Su-30MKI",
+      "callsign": "TRIDENT-03",
+      "home_base_id": "BASE_VARUN",
+      "status": "READY",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 95.0,
+      "max_fuel_capacity_liters": 12000.0,
+      "max_takeoff_weight_kg": 38800.0,
+      "empty_weight_kg": 18400.0,
+      "hardpoints_count": 12,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_BRAHMOS_A",
+          "quantity": 1
+        },
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 4
+        }
+      ],
+      "turnaround_time_mins": 50,
+      "fuel_burn_liters_per_km": 5.4,
+      "cruise_speed_kmph": 950.0,
+      "current_fuel_liters": 11400.0,
+      "max_range_km": 2111.11,
+      "total_equipped_weapons_count": 5
+    },
+    {
+      "aircraft_id": "AC_SU30_04",
+      "model": "Su-30MKI",
+      "callsign": "TRIDENT-04",
+      "home_base_id": "BASE_MARUT",
+      "status": "READY",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 94.0,
+      "max_fuel_capacity_liters": 12000.0,
+      "max_takeoff_weight_kg": 38800.0,
+      "empty_weight_kg": 18400.0,
+      "hardpoints_count": 12,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_BRAHMOS_A",
+          "quantity": 1
+        },
+        {
+          "weapon_id": "WEP_RUDRAM_1",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 50,
+      "fuel_burn_liters_per_km": 5.4,
+      "cruise_speed_kmph": 950.0,
+      "current_fuel_liters": 11280.0,
+      "max_range_km": 2088.89,
+      "total_equipped_weapons_count": 5
+    },
+    {
+      "aircraft_id": "AC_TEJAS_01",
+      "model": "Tejas Mk1A",
+      "callsign": "LIGHTNING-01",
+      "home_base_id": "BASE_MARUT",
+      "status": "READY",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 95.0,
+      "max_fuel_capacity_liters": 3000.0,
+      "max_takeoff_weight_kg": 13500.0,
+      "empty_weight_kg": 6560.0,
+      "hardpoints_count": 8,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_HAMMER_AASM",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 30,
+      "fuel_burn_liters_per_km": 2.2,
+      "cruise_speed_kmph": 850.0,
+      "current_fuel_liters": 2850.0,
+      "max_range_km": 1295.45,
+      "total_equipped_weapons_count": 4
+    },
+    {
+      "aircraft_id": "AC_TEJAS_02",
+      "model": "Tejas Mk1A",
+      "callsign": "LIGHTNING-02",
+      "home_base_id": "BASE_MARUT",
+      "status": "READY",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 90.0,
+      "max_fuel_capacity_liters": 3000.0,
+      "max_takeoff_weight_kg": 13500.0,
+      "empty_weight_kg": 6560.0,
+      "hardpoints_count": 8,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_RUDRAM_1",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 30,
+      "fuel_burn_liters_per_km": 2.2,
+      "cruise_speed_kmph": 850.0,
+      "current_fuel_liters": 2700.0,
+      "max_range_km": 1227.27,
+      "total_equipped_weapons_count": 4
+    },
+    {
+      "aircraft_id": "AC_TEJAS_03",
+      "model": "Tejas Mk1A",
+      "callsign": "LIGHTNING-03",
+      "home_base_id": "BASE_SHAKTI",
+      "status": "READY",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 95.0,
+      "max_fuel_capacity_liters": 3000.0,
+      "max_takeoff_weight_kg": 13500.0,
+      "empty_weight_kg": 6560.0,
+      "hardpoints_count": 8,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_RUDRAM_1",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_HAMMER_AASM",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 30,
+      "fuel_burn_liters_per_km": 2.2,
+      "cruise_speed_kmph": 850.0,
+      "current_fuel_liters": 2850.0,
+      "max_range_km": 1295.45,
+      "total_equipped_weapons_count": 6
+    },
+    {
+      "aircraft_id": "AC_TEJAS_04",
+      "model": "Tejas Mk1A",
+      "callsign": "LIGHTNING-04",
+      "home_base_id": "BASE_SHAKTI",
+      "status": "MAINTENANCE",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 40.0,
+      "max_fuel_capacity_liters": 3000.0,
+      "max_takeoff_weight_kg": 13500.0,
+      "empty_weight_kg": 6560.0,
+      "hardpoints_count": 8,
+      "equipped_weapons": [],
+      "turnaround_time_mins": 90,
+      "fuel_burn_liters_per_km": 2.2,
+      "cruise_speed_kmph": 850.0,
+      "current_fuel_liters": 1200.0,
+      "max_range_km": 545.45,
+      "total_equipped_weapons_count": 0
+    },
+    {
+      "aircraft_id": "AC_MIRAGE_01",
+      "model": "Mirage 2000-5",
+      "callsign": "VAJRA-01",
+      "home_base_id": "BASE_GARUDA",
+      "status": "READY",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 94.0,
+      "max_fuel_capacity_liters": 4300.0,
+      "max_takeoff_weight_kg": 17000.0,
+      "empty_weight_kg": 7500.0,
+      "hardpoints_count": 9,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_SPICE_2000",
+          "quantity": 1
+        },
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 40,
+      "fuel_burn_liters_per_km": 2.9,
+      "cruise_speed_kmph": 890.0,
+      "current_fuel_liters": 4042.0,
+      "max_range_km": 1393.79,
+      "total_equipped_weapons_count": 3
+    },
+    {
+      "aircraft_id": "AC_MIRAGE_02",
+      "model": "Mirage 2000-5",
+      "callsign": "VAJRA-02",
+      "home_base_id": "BASE_GARUDA",
+      "status": "READY",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 92.0,
+      "max_fuel_capacity_liters": 4300.0,
+      "max_takeoff_weight_kg": 17000.0,
+      "empty_weight_kg": 7500.0,
+      "hardpoints_count": 9,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_RUDRAM_1",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_HAMMER_AASM",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 40,
+      "fuel_burn_liters_per_km": 2.9,
+      "cruise_speed_kmph": 890.0,
+      "current_fuel_liters": 3956.0,
+      "max_range_km": 1364.14,
+      "total_equipped_weapons_count": 6
+    },
+    {
+      "aircraft_id": "AC_MIRAGE_03",
+      "model": "Mirage 2000-5",
+      "callsign": "VAJRA-03",
+      "home_base_id": "BASE_TRISHUL",
+      "status": "READY",
+      "asset_type": "COMBAT_JET",
+      "current_fuel_pct": 92.0,
+      "max_fuel_capacity_liters": 4300.0,
+      "max_takeoff_weight_kg": 17000.0,
+      "empty_weight_kg": 7500.0,
+      "hardpoints_count": 9,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_SPICE_2000",
+          "quantity": 1
+        },
+        {
+          "weapon_id": "WEP_RUDRAM_1",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 40,
+      "fuel_burn_liters_per_km": 2.9,
+      "cruise_speed_kmph": 890.0,
+      "current_fuel_liters": 3956.0,
+      "max_range_km": 1364.14,
+      "total_equipped_weapons_count": 5
+    },
+    {
+      "aircraft_id": "AC_HELI_MI17_01",
+      "model": "Mi-17V5 SAR",
+      "callsign": "RESCUE-01",
+      "home_base_id": "BASE_SHAKTI",
+      "status": "READY",
+      "asset_type": "RESCUE_HELICOPTER",
+      "current_fuel_pct": 95.0,
+      "max_fuel_capacity_liters": 2617.0,
+      "max_takeoff_weight_kg": 13000.0,
+      "empty_weight_kg": 7489.0,
+      "hardpoints_count": 4,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 25,
+      "fuel_burn_liters_per_km": 2.4,
+      "cruise_speed_kmph": 250.0,
+      "current_fuel_liters": 2486.15,
+      "max_range_km": 1035.9,
+      "total_equipped_weapons_count": 2
+    },
+    {
+      "aircraft_id": "AC_HELI_MI17_02",
+      "model": "Mi-17V5 CSAR",
+      "callsign": "RESCUE-02",
+      "home_base_id": "BASE_GARUDA",
+      "status": "READY",
+      "asset_type": "RESCUE_HELICOPTER",
+      "current_fuel_pct": 92.0,
+      "max_fuel_capacity_liters": 2617.0,
+      "max_takeoff_weight_kg": 13000.0,
+      "empty_weight_kg": 7489.0,
+      "hardpoints_count": 4,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 25,
+      "fuel_burn_liters_per_km": 2.4,
+      "cruise_speed_kmph": 250.0,
+      "current_fuel_liters": 2407.64,
+      "max_range_km": 1003.18,
+      "total_equipped_weapons_count": 2
+    },
+    {
+      "aircraft_id": "AC_HELI_MI17_03",
+      "model": "Mi-17V5 Tactical SAR",
+      "callsign": "RESCUE-03",
+      "home_base_id": "BASE_MARUT",
+      "status": "READY",
+      "asset_type": "RESCUE_HELICOPTER",
+      "current_fuel_pct": 88.0,
+      "max_fuel_capacity_liters": 2617.0,
+      "max_takeoff_weight_kg": 13000.0,
+      "empty_weight_kg": 7489.0,
+      "hardpoints_count": 4,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 25,
+      "fuel_burn_liters_per_km": 2.4,
+      "cruise_speed_kmph": 250.0,
+      "current_fuel_liters": 2302.96,
+      "max_range_km": 959.57,
+      "total_equipped_weapons_count": 2
+    },
+    {
+      "aircraft_id": "AC_HELI_CHINOOK_01",
+      "model": "CH-47F Chinook",
+      "callsign": "TITAN-01",
+      "home_base_id": "BASE_TRISHUL",
+      "status": "READY",
+      "asset_type": "TRANSPORT_HELICOPTER",
+      "current_fuel_pct": 90.0,
+      "max_fuel_capacity_liters": 3914.0,
+      "max_takeoff_weight_kg": 22680.0,
+      "empty_weight_kg": 11150.0,
+      "hardpoints_count": 2,
+      "equipped_weapons": [],
+      "turnaround_time_mins": 30,
+      "fuel_burn_liters_per_km": 3.2,
+      "cruise_speed_kmph": 290.0,
+      "current_fuel_liters": 3522.6,
+      "max_range_km": 1100.81,
+      "total_equipped_weapons_count": 0
+    },
+    {
+      "aircraft_id": "AC_HELI_CHINOOK_02",
+      "model": "CH-47F Chinook Heavy",
+      "callsign": "TITAN-02",
+      "home_base_id": "BASE_VAYU",
+      "status": "READY",
+      "asset_type": "TRANSPORT_HELICOPTER",
+      "current_fuel_pct": 94.0,
+      "max_fuel_capacity_liters": 3914.0,
+      "max_takeoff_weight_kg": 22680.0,
+      "empty_weight_kg": 11150.0,
+      "hardpoints_count": 2,
+      "equipped_weapons": [],
+      "turnaround_time_mins": 30,
+      "fuel_burn_liters_per_km": 3.2,
+      "cruise_speed_kmph": 290.0,
+      "current_fuel_liters": 3679.16,
+      "max_range_km": 1149.74,
+      "total_equipped_weapons_count": 0
+    },
+    {
+      "aircraft_id": "AC_HELI_CHINOOK_03",
+      "model": "CH-47F Chinook Cargo",
+      "callsign": "TITAN-03",
+      "home_base_id": "BASE_VARUN",
+      "status": "READY",
+      "asset_type": "TRANSPORT_HELICOPTER",
+      "current_fuel_pct": 91.0,
+      "max_fuel_capacity_liters": 3914.0,
+      "max_takeoff_weight_kg": 22680.0,
+      "empty_weight_kg": 11150.0,
+      "hardpoints_count": 2,
+      "equipped_weapons": [],
+      "turnaround_time_mins": 30,
+      "fuel_burn_liters_per_km": 3.2,
+      "cruise_speed_kmph": 290.0,
+      "current_fuel_liters": 3561.74,
+      "max_range_km": 1113.04,
+      "total_equipped_weapons_count": 0
+    },
+    {
+      "aircraft_id": "AC_HELI_PRACHAND_01",
+      "model": "HAL Prachand LCH",
+      "callsign": "PRACHAND-01",
+      "home_base_id": "BASE_GARUDA",
+      "status": "READY",
+      "asset_type": "RESCUE_HELICOPTER",
+      "current_fuel_pct": 95.0,
+      "max_fuel_capacity_liters": 1400.0,
+      "max_takeoff_weight_kg": 5800.0,
+      "empty_weight_kg": 2250.0,
+      "hardpoints_count": 4,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 20,
+      "fuel_burn_liters_per_km": 1.8,
+      "cruise_speed_kmph": 268.0,
+      "current_fuel_liters": 1330.0,
+      "max_range_km": 738.89,
+      "total_equipped_weapons_count": 4
+    },
+    {
+      "aircraft_id": "AC_HELI_PRACHAND_02",
+      "model": "HAL Prachand LCH",
+      "callsign": "PRACHAND-02",
+      "home_base_id": "BASE_SHAKTI",
+      "status": "READY",
+      "asset_type": "RESCUE_HELICOPTER",
+      "current_fuel_pct": 95.0,
+      "max_fuel_capacity_liters": 1400.0,
+      "max_takeoff_weight_kg": 5800.0,
+      "empty_weight_kg": 2250.0,
+      "hardpoints_count": 4,
+      "equipped_weapons": [
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 2
+        },
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 2
+        }
+      ],
+      "turnaround_time_mins": 20,
+      "fuel_burn_liters_per_km": 1.8,
+      "cruise_speed_kmph": 268.0,
+      "current_fuel_liters": 1330.0,
+      "max_range_km": 738.89,
+      "total_equipped_weapons_count": 4
+    }
+  ],
+  "airbases": [
+    {
+      "id": "BASE_TRISHUL",
+      "name": "Trishul Air Force Station",
+      "lat": 30.36,
+      "lng": 76.81,
+      "runway_status": "OPERATIONAL",
+      "available_fuel_liters": 480000.0,
+      "stored_weapons": [
+        {
+          "weapon_id": "WEP_SPICE_2000",
+          "quantity": 8
+        },
+        {
+          "weapon_id": "WEP_HAMMER_AASM",
+          "quantity": 12
+        },
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 14
+        },
+        {
+          "weapon_id": "WEP_RUDRAM_1",
+          "quantity": 6
+        },
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 10
+        }
+      ]
+    },
+    {
+      "id": "BASE_GARUDA",
+      "name": "Garuda Tactical Base",
+      "lat": 26.25,
+      "lng": 73.04,
+      "runway_status": "OPERATIONAL",
+      "available_fuel_liters": 550000.0,
+      "stored_weapons": [
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 12
+        },
+        {
+          "weapon_id": "WEP_SPICE_2000",
+          "quantity": 6
+        },
+        {
+          "weapon_id": "WEP_HAMMER_AASM",
+          "quantity": 10
+        },
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 14
+        },
+        {
+          "weapon_id": "WEP_BRAHMOS_A",
+          "quantity": 4
+        }
+      ]
+    },
+    {
+      "id": "BASE_VAYU",
+      "name": "Vayu Forward Air Base",
+      "lat": 30.75,
+      "lng": 75.63,
+      "runway_status": "OPERATIONAL",
+      "available_fuel_liters": 390000.0,
+      "stored_weapons": [
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 8
+        },
+        {
+          "weapon_id": "WEP_RUDRAM_1",
+          "quantity": 8
+        },
+        {
+          "weapon_id": "WEP_HAMMER_AASM",
+          "quantity": 8
+        },
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 8
+        }
+      ]
+    },
+    {
+      "id": "BASE_MARUT",
+      "name": "Marut Combat Station",
+      "lat": 23.28,
+      "lng": 69.67,
+      "runway_status": "OPERATIONAL",
+      "available_fuel_liters": 420000.0,
+      "stored_weapons": [
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 6
+        },
+        {
+          "weapon_id": "WEP_SPICE_2000",
+          "quantity": 6
+        },
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 8
+        }
+      ]
+    },
+    {
+      "id": "BASE_VARUN",
+      "name": "Varun Naval Air Enclave",
+      "lat": 22.46,
+      "lng": 70.01,
+      "runway_status": "OPERATIONAL",
+      "available_fuel_liters": 510000.0,
+      "stored_weapons": [
+        {
+          "weapon_id": "WEP_BRAHMOS_A",
+          "quantity": 8
+        },
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 8
+        },
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 8
+        }
+      ]
+    },
+    {
+      "id": "BASE_SHAKTI",
+      "name": "Shakti High-Altitude Base",
+      "lat": 33.87,
+      "lng": 74.97,
+      "runway_status": "OPERATIONAL",
+      "available_fuel_liters": 280000.0,
+      "stored_weapons": [
+        {
+          "weapon_id": "WEP_HAMMER_AASM",
+          "quantity": 4
+        },
+        {
+          "weapon_id": "WEP_ASTRA_MK1",
+          "quantity": 6
+        },
+        {
+          "weapon_id": "WEP_PYTHON_5",
+          "quantity": 6
+        }
+      ]
+    }
+  ],
+  "pilots": [
+    {
+      "pilot_id": "PLT_01",
+      "name": "Wg Cdr Vikram Rathore",
+      "rank": "Wing Commander",
+      "qualifications": [
+        "ALL_WEATHER",
+        "DEAD_SEAD_CERTIFIED",
+        "NIGHT_OPERATIONS"
+      ],
+      "rest_hours_completed": 14.5,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_TRISHUL"
+    },
+    {
+      "pilot_id": "PLT_02",
+      "name": "Sqn Ldr Ananya Sharma",
+      "rank": "Squadron Leader",
+      "qualifications": [
+        "ALL_WEATHER",
+        "DEAD_SEAD_CERTIFIED",
+        "NIGHT_OPERATIONS"
+      ],
+      "rest_hours_completed": 12.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_TRISHUL"
+    },
+    {
+      "pilot_id": "PLT_03",
+      "name": "Flt Lt Rohan Mehra",
+      "rank": "Flight Lieutenant",
+      "qualifications": [
+        "ALL_WEATHER"
+      ],
+      "rest_hours_completed": 5.5,
+      "consecutive_flight_hours": 4.5,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_TRISHUL"
+    },
+    {
+      "pilot_id": "PLT_04",
+      "name": "Sqn Ldr Kabir Sen",
+      "rank": "Squadron Leader",
+      "qualifications": [
+        "ALL_WEATHER",
+        "DEAD_SEAD_CERTIFIED"
+      ],
+      "rest_hours_completed": 11.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_TRISHUL"
+    },
+    {
+      "pilot_id": "PLT_05",
+      "name": "Gp Capt Devendra Nath",
+      "rank": "Group Captain",
+      "qualifications": [
+        "ALL_WEATHER",
+        "NIGHT_OPERATIONS",
+        "DEAD_SEAD_CERTIFIED"
+      ],
+      "rest_hours_completed": 16.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_GARUDA"
+    },
+    {
+      "pilot_id": "PLT_06",
+      "name": "Sqn Ldr Priya Nair",
+      "rank": "Squadron Leader",
+      "qualifications": [
+        "NIGHT_OPERATIONS",
+        "ALL_WEATHER",
+        "DEAD_SEAD_CERTIFIED"
+      ],
+      "rest_hours_completed": 10.5,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_GARUDA"
+    },
+    {
+      "pilot_id": "PLT_07",
+      "name": "Flt Lt Aditya Rawat",
+      "rank": "Flight Lieutenant",
+      "qualifications": [
+        "DEAD_SEAD_CERTIFIED",
+        "NIGHT_OPERATIONS"
+      ],
+      "rest_hours_completed": 9.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_GARUDA"
+    },
+    {
+      "pilot_id": "PLT_08",
+      "name": "Sqn Ldr Tarun Verma",
+      "rank": "Squadron Leader",
+      "qualifications": [
+        "ALL_WEATHER"
+      ],
+      "rest_hours_completed": 6.0,
+      "consecutive_flight_hours": 5.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_GARUDA"
+    },
+    {
+      "pilot_id": "PLT_09",
+      "name": "Wg Cdr Rajeshwar Gill",
+      "rank": "Wing Commander",
+      "qualifications": [
+        "DEAD_SEAD_CERTIFIED",
+        "ALL_WEATHER",
+        "NIGHT_OPERATIONS"
+      ],
+      "rest_hours_completed": 15.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_VAYU"
+    },
+    {
+      "pilot_id": "PLT_10",
+      "name": "Sqn Ldr Gurpreet Singh",
+      "rank": "Squadron Leader",
+      "qualifications": [
+        "ALL_WEATHER",
+        "DEAD_SEAD_CERTIFIED"
+      ],
+      "rest_hours_completed": 13.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_VAYU"
+    },
+    {
+      "pilot_id": "PLT_11",
+      "name": "Flt Lt Amanullah Khan",
+      "rank": "Flight Lieutenant",
+      "qualifications": [
+        "ALL_WEATHER",
+        "NIGHT_OPERATIONS"
+      ],
+      "rest_hours_completed": 10.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_VAYU"
+    },
+    {
+      "pilot_id": "PLT_12",
+      "name": "Wg Cdr Hardeep Sandhu",
+      "rank": "Wing Commander",
+      "qualifications": [
+        "NIGHT_OPERATIONS",
+        "DEAD_SEAD_CERTIFIED",
+        "ALL_WEATHER",
+        "ANTI_SHIP_CERTIFIED"
+      ],
+      "rest_hours_completed": 14.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_MARUT"
+    },
+    {
+      "pilot_id": "PLT_13",
+      "name": "Sqn Ldr Jayesh Patel",
+      "rank": "Squadron Leader",
+      "qualifications": [
+        "NIGHT_OPERATIONS",
+        "ALL_WEATHER",
+        "ANTI_SHIP_CERTIFIED"
+      ],
+      "rest_hours_completed": 11.5,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_MARUT"
+    },
+    {
+      "pilot_id": "PLT_14",
+      "name": "Flt Lt Sameer Joshi",
+      "rank": "Flight Lieutenant",
+      "qualifications": [
+        "ANTI_SHIP_CERTIFIED",
+        "DEAD_SEAD_CERTIFIED"
+      ],
+      "rest_hours_completed": 12.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_MARUT"
+    },
+    {
+      "pilot_id": "PLT_15",
+      "name": "Cdr Arvind Menon",
+      "rank": "Commander",
+      "qualifications": [
+        "ANTI_SHIP_CERTIFIED",
+        "ALL_WEATHER",
+        "NIGHT_OPERATIONS"
+      ],
+      "rest_hours_completed": 18.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_VARUN"
+    },
+    {
+      "pilot_id": "PLT_16",
+      "name": "Lt Cdr Neil Deshmukh",
+      "rank": "Lt Commander",
+      "qualifications": [
+        "ANTI_SHIP_CERTIFIED",
+        "ALL_WEATHER"
+      ],
+      "rest_hours_completed": 13.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_VARUN"
+    },
+    {
+      "pilot_id": "PLT_17",
+      "name": "Lt Raghav Kulkarni",
+      "rank": "Lieutenant",
+      "qualifications": [
+        "ANTI_SHIP_CERTIFIED"
+      ],
+      "rest_hours_completed": 9.5,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_VARUN"
+    },
+    {
+      "pilot_id": "PLT_18",
+      "name": "Wg Cdr Tenzing Norbu",
+      "rank": "Wing Commander",
+      "qualifications": [
+        "ALL_WEATHER",
+        "NIGHT_OPERATIONS",
+        "DEAD_SEAD_CERTIFIED"
+      ],
+      "rest_hours_completed": 15.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_SHAKTI"
+    },
+    {
+      "pilot_id": "PLT_19",
+      "name": "Sqn Ldr Bilal Ahmed",
+      "rank": "Squadron Leader",
+      "qualifications": [
+        "ALL_WEATHER",
+        "DEAD_SEAD_CERTIFIED"
+      ],
+      "rest_hours_completed": 10.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_SHAKTI"
+    },
+    {
+      "pilot_id": "PLT_20",
+      "name": "Flt Lt Siddharth Roy",
+      "rank": "Flight Lieutenant",
+      "qualifications": [
+        "NIGHT_OPERATIONS"
+      ],
+      "rest_hours_completed": 4.0,
+      "consecutive_flight_hours": 6.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_SHAKTI"
+    },
+    {
+      "pilot_id": "PLT_21",
+      "name": "Sqn Ldr Karan Thapar",
+      "rank": "Squadron Leader",
+      "qualifications": [
+        "ALL_WEATHER",
+        "NIGHT_OPERATIONS"
+      ],
+      "rest_hours_completed": 12.5,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_SHAKTI"
+    },
+    {
+      "pilot_id": "PLT_22",
+      "name": "Flt Lt Sneha Kulkarni",
+      "rank": "Flight Lieutenant",
+      "qualifications": [
+        "ALL_WEATHER",
+        "DEAD_SEAD_CERTIFIED"
+      ],
+      "rest_hours_completed": 11.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_TRISHUL"
+    },
+    {
+      "pilot_id": "PLT_23",
+      "name": "Sqn Ldr Rajeshwar Singh",
+      "rank": "Squadron Leader",
+      "qualifications": [
+        "NIGHT_OPERATIONS",
+        "ALL_WEATHER"
+      ],
+      "rest_hours_completed": 14.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_GARUDA"
+    },
+    {
+      "pilot_id": "PLT_24",
+      "name": "Flt Lt Manav Joshi",
+      "rank": "Flight Lieutenant",
+      "qualifications": [
+        "ALL_WEATHER",
+        "ANTI_SHIP_CERTIFIED"
+      ],
+      "rest_hours_completed": 10.5,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_VAYU"
+    },
+    {
+      "pilot_id": "PLT_25",
+      "name": "Sqn Ldr Devendra Nair",
+      "rank": "Squadron Leader",
+      "qualifications": [
+        "ALL_WEATHER",
+        "NIGHT_OPERATIONS"
+      ],
+      "rest_hours_completed": 11.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_GARUDA"
+    },
+    {
+      "pilot_id": "PLT_26",
+      "name": "Flt Lt Karthik Sundaram",
+      "rank": "Flight Lieutenant",
+      "qualifications": [
+        "ALL_WEATHER",
+        "DEAD_SEAD_CERTIFIED"
+      ],
+      "rest_hours_completed": 13.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_MARUT"
+    },
+    {
+      "pilot_id": "PLT_27",
+      "name": "Wg Cdr Harpreet Gill",
+      "rank": "Wing Commander",
+      "qualifications": [
+        "ALL_WEATHER",
+        "NIGHT_OPERATIONS"
+      ],
+      "rest_hours_completed": 12.5,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_TRISHUL"
+    },
+    {
+      "pilot_id": "PLT_28",
+      "name": "Sqn Ldr Mohit Chawla",
+      "rank": "Squadron Leader",
+      "qualifications": [
+        "ALL_WEATHER",
+        "NIGHT_OPERATIONS"
+      ],
+      "rest_hours_completed": 10.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_VAYU"
+    },
+    {
+      "pilot_id": "PLT_29",
+      "name": "Flt Lt Aditya Verma",
+      "rank": "Flight Lieutenant",
+      "qualifications": [
+        "ALL_WEATHER",
+        "ANTI_SHIP_CERTIFIED"
+      ],
+      "rest_hours_completed": 14.0,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_VARUN"
+    },
+    {
+      "pilot_id": "PLT_30",
+      "name": "Flt Lt Pranav Rao",
+      "rank": "Flight Lieutenant",
+      "qualifications": [
+        "ALL_WEATHER",
+        "NIGHT_OPERATIONS"
+      ],
+      "rest_hours_completed": 11.5,
+      "consecutive_flight_hours": 0.0,
+      "assigned_aircraft_id": null,
+      "home_base_id": "BASE_SHAKTI"
+    }
+  ],
+  "threat_environment": [
+    {
+      "threat_id": "THREAT_SAM_NORTH",
+      "name": "HQ-9 SAM Battery Sector Alpha",
+      "type": "SAM_RADAR_BATTERY",
+      "center_location": {
+        "lat": 32.2,
+        "lng": 74.6,
+        "name": "Sector Alpha SAM"
+      },
+      "effective_radius_km": 70.0,
+      "threat_severity": 5,
+      "countermeasure_required": "DEAD_SEAD_CHAFF_FLARES"
+    },
+    {
+      "threat_id": "THREAT_EW_CENTRAL",
+      "name": "Krasukha-4 Jamming Corridor",
+      "type": "EW_JAMMING_CORRIDOR",
+      "center_location": {
+        "lat": 28.5,
+        "lng": 71.8,
+        "name": "Central Desert Jammer"
+      },
+      "effective_radius_km": 85.0,
+      "threat_severity": 3,
+      "countermeasure_required": "HOJ_BURST_COMM"
+    },
+    {
+      "threat_id": "THREAT_STORM_WEST",
+      "name": "Monsoon Severe Squall Front",
+      "type": "SEVERE_WEATHER",
+      "center_location": {
+        "lat": 24.8,
+        "lng": 70.5,
+        "name": "West Coast Front"
+      },
+      "effective_radius_km": 60.0,
+      "threat_severity": 4,
+      "countermeasure_required": "TERRAIN_AVOIDANCE_RADAR"
+    },
+    {
+      "threat_id": "THREAT_SAM_SOUTH",
+      "name": "FM-90 Short Range Air Defense Cluster",
+      "type": "SAM_RADAR_BATTERY",
+      "center_location": {
+        "lat": 22.8,
+        "lng": 68.9,
+        "name": "Gulf Point SAM"
+      },
+      "effective_radius_km": 50.0,
+      "threat_severity": 4,
+      "countermeasure_required": "ANTI_RADIATION_STANDOFF"
+    }
+  ],
+  "mission_targets": [
+    {
+      "target_id": "TGT_ALPHA_BUNKER",
+      "name": "Alpha Command Bunker Citadel",
+      "location": {
+        "lat": 31.8,
+        "lng": 74.2,
+        "name": "Citadel Underground Complex"
+      },
+      "target_type": "HARDENED_BUNKER",
+      "required_weapon_category": "PRECISION_GUIDED_BOMB",
+      "priority_level": 5,
+      "time_window_mins": 45,
+      "required_pilot_qualifications": [
+        "ALL_WEATHER"
+      ]
+    },
+    {
+      "target_id": "TGT_BRAVO_RADAR",
+      "name": "Bravo Early Warning Radar Station",
+      "location": {
+        "lat": 32.6,
+        "lng": 74.4,
+        "name": "Ridge Radar Station"
+      },
+      "target_type": "RADAR_STATION",
+      "required_weapon_category": "ANTI_RADIATION_MISSILE",
+      "priority_level": 4,
+      "time_window_mins": 60,
+      "required_pilot_qualifications": [
+        "DEAD_SEAD_CERTIFIED"
+      ]
+    },
+    {
+      "target_id": "TGT_CHARLIE_CONVOY",
+      "name": "Charlie Armored Logistics Column",
+      "location": {
+        "lat": 28.1,
+        "lng": 71.3,
+        "name": "Desert Highway Convoy"
+      },
+      "target_type": "CONVOY",
+      "required_weapon_category": "PRECISION_GUIDED_BOMB",
+      "priority_level": 3,
+      "time_window_mins": 90,
+      "required_pilot_qualifications": [
+        "NIGHT_OPERATIONS"
+      ]
+    },
+    {
+      "target_id": "TGT_DELTA_AIRFIELD",
+      "name": "Delta Forward Air Base Runway",
+      "location": {
+        "lat": 30.15,
+        "lng": 72.35,
+        "name": "Delta Runway Interdiction"
+      },
+      "target_type": "AIRFIELD",
+      "required_weapon_category": "PRECISION_GUIDED_BOMB",
+      "priority_level": 5,
+      "time_window_mins": 40,
+      "required_pilot_qualifications": [
+        "ALL_WEATHER"
+      ]
+    },
+    {
+      "target_id": "TGT_ECHO_FRIGATE",
+      "name": "Echo Guided Missile Frigate",
+      "location": {
+        "lat": 22.1,
+        "lng": 67.9,
+        "name": "Arabian Sea Patrol Frigate"
+      },
+      "target_type": "NAVAL_VESSEL",
+      "required_weapon_category": "ANTI_SHIP",
+      "priority_level": 4,
+      "time_window_mins": 75,
+      "required_pilot_qualifications": [
+        "ANTI_SHIP_CERTIFIED"
+      ]
+    },
+    {
+      "target_id": "TGT_FOXTROT_RADAR",
+      "name": "Foxtrot Sector Surveillance Radar",
+      "location": {
+        "lat": 27.2,
+        "lng": 70.9,
+        "name": "West Sector Radar Node"
+      },
+      "target_type": "RADAR_STATION",
+      "required_weapon_category": "ANTI_RADIATION_MISSILE",
+      "priority_level": 3,
+      "time_window_mins": 120,
+      "required_pilot_qualifications": [
+        "DEAD_SEAD_CERTIFIED"
+      ]
+    }
+  ],
+  "active_missions": [],
+  "event_log": [
+    {
+      "event_id": "EVT-INIT-001",
+      "timestamp": "2026-10-07T06:00:00Z",
+      "event_type": "SYSTEM_VALIDATION",
+      "entity_type": "SYSTEM",
+      "entity_id": "TELEMETRY_CORE",
+      "severity": "INFO",
+      "source": "SYSTEM",
+      "description": "Synthetic C2 Theatre Dataset initialized with seed=42. 23 aircraft, 30 aviators, 6 airbases verified.",
+      "affected_assets": [],
+      "retasking_actions": []
+    },
+    {
+      "event_id": "EVT-MAINT-002",
+      "timestamp": "2026-10-06T19:30:00Z",
+      "event_type": "MAINTENANCE_UPDATE",
+      "entity_type": "AIRCRAFT",
+      "entity_id": "AC_RAFALE_04",
+      "severity": "WARNING",
+      "source": "AI_OPTIMIZER",
+      "description": "Aircraft AC_RAFALE_04 grounded for scheduled 500-hr depot turbine overhaul. Work Order WO-2026-042 generated.",
+      "affected_assets": [
+        "AC_RAFALE_04"
+      ],
+      "retasking_actions": []
+    },
+    {
+      "event_id": "EVT-APPR-003",
+      "timestamp": "2026-10-05T08:42:15Z",
+      "event_type": "APPROVAL_DECISION",
+      "entity_type": "APPROVAL",
+      "entity_id": "APP-2026-001",
+      "severity": "INFO",
+      "source": "HUMAN_COMMANDER",
+      "description": "Proposal APP-2026-001 APPROVED by Air Commodore R. Sharma: Awantipora diversion authorized.",
+      "affected_assets": [
+        "BASE_TRISHUL"
+      ],
+      "retasking_actions": []
+    },
+    {
+      "event_id": "EVT-WARN-004",
+      "timestamp": "2026-10-06T12:00:00Z",
+      "event_type": "MAINTENANCE_UPDATE",
+      "entity_type": "AIRCRAFT",
+      "entity_id": "AC_TEJAS_04",
+      "severity": "CRITICAL",
+      "source": "TELEMETRY_FEED",
+      "description": "Work Order WO-2026-039 for AC_TEJAS_04 is now OVERDUE. Radar antenna bus alignment pending.",
+      "affected_assets": [
+        "AC_TEJAS_04"
+      ],
+      "retasking_actions": []
+    }
+  ],
+  "last_updated": "2026-10-07T06:00:00Z",
+  "maintenance_records": [
+    {
+      "record_id": "WO-2026-042",
+      "resource_id": "AC_RAFALE_04",
+      "resource_type": "AIRCRAFT",
+      "category": "ENGINE_OVERHAUL",
+      "status": "IN_PROGRESS",
+      "priority": "HIGH",
+      "airbase_id": "BASE_GARUDA",
+      "planned_start": "2026-10-06T08:00:00Z",
+      "planned_completion": "2026-10-08T18:00:00Z",
+      "actual_completion": null,
+      "estimated_duration_hours": 34.0,
+      "actual_duration_hours": 22.5,
+      "description": "Stage-2 Snecma M88 turbine blade acoustic inspection and 500-hr depot service.",
+      "technician_lead": "Chief Warrant Officer K. Ramanathan",
+      "last_update": "2026-10-07T05:30:00Z"
+    },
+    {
+      "record_id": "WO-2026-039",
+      "resource_id": "AC_TEJAS_04",
+      "resource_type": "AIRCRAFT",
+      "category": "AVIONICS_REPAIR",
+      "status": "OVERDUE",
+      "priority": "CRITICAL",
+      "airbase_id": "BASE_SHAKTI",
+      "planned_start": "2026-10-04T10:00:00Z",
+      "planned_completion": "2026-10-06T12:00:00Z",
+      "actual_completion": null,
+      "estimated_duration_hours": 26.0,
+      "actual_duration_hours": 38.0,
+      "description": "Uttam AESA Radar antenna synchronization bus calibration and waveguide seal replacement.",
+      "technician_lead": "Junior Warrant Officer S. Sengupta",
+      "last_update": "2026-10-07T05:45:00Z"
+    },
+    {
+      "record_id": "WO-2026-044",
+      "resource_id": "AC_SU30_03",
+      "resource_type": "AIRCRAFT",
+      "category": "SCHEDULED_INSPECTION",
+      "status": "OPEN",
+      "priority": "MEDIUM",
+      "airbase_id": "BASE_VAYU",
+      "planned_start": "2026-10-07T14:00:00Z",
+      "planned_completion": "2026-10-08T16:00:00Z",
+      "actual_completion": null,
+      "estimated_duration_hours": 12.0,
+      "actual_duration_hours": null,
+      "description": "Pre-flight fly-by-wire hydraulic actuator seals and auxiliary power unit (APU) check.",
+      "technician_lead": "Sergeant M. Rawat",
+      "last_update": "2026-10-07T04:15:00Z"
+    },
+    {
+      "record_id": "WO-2026-031",
+      "resource_id": "AC_RAFALE_01",
+      "resource_type": "AIRCRAFT",
+      "category": "SCHEDULED_INSPECTION",
+      "status": "COMPLETED",
+      "priority": "LOW",
+      "airbase_id": "BASE_TRISHUL",
+      "planned_start": "2026-10-03T06:00:00Z",
+      "planned_completion": "2026-10-04T12:00:00Z",
+      "actual_completion": "2026-10-04T10:45:00Z",
+      "estimated_duration_hours": 16.0,
+      "actual_duration_hours": 14.75,
+      "description": "100-hour airframe turnaround cycle and SPECTRA EW pod diagnostic signoff.",
+      "technician_lead": "Master Warrant Officer P. Deshmukh",
+      "last_update": "2026-10-04T11:00:00Z"
+    },
+    {
+      "record_id": "WO-2026-035",
+      "resource_id": "AC_SU30_01",
+      "resource_type": "AIRCRAFT",
+      "category": "HYDRAULIC_SERVICE",
+      "status": "COMPLETED",
+      "priority": "MEDIUM",
+      "airbase_id": "BASE_VAYU",
+      "planned_start": "2026-10-04T09:00:00Z",
+      "planned_completion": "2026-10-05T15:00:00Z",
+      "actual_completion": "2026-10-05T14:20:00Z",
+      "estimated_duration_hours": 18.0,
+      "actual_duration_hours": 17.3,
+      "description": "Primary landing gear brake accumulator replacement and high-pressure fluid flush.",
+      "technician_lead": "Sergeant A. K. Joshi",
+      "last_update": "2026-10-05T15:00:00Z"
+    },
+    {
+      "record_id": "WO-2026-045",
+      "resource_id": "AC_M2000_02",
+      "resource_type": "AIRCRAFT",
+      "category": "AIRFRAME_STRUCTURAL",
+      "status": "OPEN",
+      "priority": "HIGH",
+      "airbase_id": "BASE_MARUT",
+      "planned_start": "2026-10-08T06:00:00Z",
+      "planned_completion": "2026-10-09T18:00:00Z",
+      "actual_completion": null,
+      "estimated_duration_hours": 24.0,
+      "actual_duration_hours": null,
+      "description": "Delta-wing root composite ultrasonic stress inspection following high-g maneuvers.",
+      "technician_lead": "Junior Warrant Officer V. Chawla",
+      "last_update": "2026-10-07T05:00:00Z"
+    },
+    {
+      "record_id": "WO-2026-046",
+      "resource_id": "AC_MIG29K_02",
+      "resource_type": "AIRCRAFT",
+      "category": "AVIONICS_REPAIR",
+      "status": "IN_PROGRESS",
+      "priority": "MEDIUM",
+      "airbase_id": "BASE_VARUN",
+      "planned_start": "2026-10-06T14:00:00Z",
+      "planned_completion": "2026-10-07T20:00:00Z",
+      "actual_completion": null,
+      "estimated_duration_hours": 16.0,
+      "actual_duration_hours": 11.0,
+      "description": "Carrier arresting hook sensor wiring harness continuity remediation.",
+      "technician_lead": "Chief Petty Officer D. Nair",
+      "last_update": "2026-10-07T05:10:00Z"
+    },
+    {
+      "record_id": "WO-2026-047",
+      "resource_id": "AC_MI17_01",
+      "resource_type": "AIRCRAFT",
+      "category": "SCHEDULED_INSPECTION",
+      "status": "OPEN",
+      "priority": "LOW",
+      "airbase_id": "BASE_SHAKTI",
+      "planned_start": "2026-10-08T08:00:00Z",
+      "planned_completion": "2026-10-08T18:00:00Z",
+      "actual_completion": null,
+      "estimated_duration_hours": 10.0,
+      "actual_duration_hours": null,
+      "description": "SAR hoist cable tension load test and cabin medical oxygen manifold inspection.",
+      "technician_lead": "Sergeant T. Lyngdoh",
+      "last_update": "2026-10-07T05:25:00Z"
+    }
+  ],
+  "support_inventory": [
+    {
+      "item_id": "INV-ENG-M88",
+      "item_name": "Snecma M88-4E Turbofan Core Module",
+      "category": "PROPULSION_SPARE",
+      "airbase_id": "BASE_TRISHUL",
+      "quantity_on_hand": 3,
+      "reserved_quantity": 1,
+      "unit": "UNITS",
+      "reorder_threshold": 2,
+      "supplier_lead_time_days": 18,
+      "last_audit": "2026-10-05T09:00:00Z",
+      "status": "ADEQUATE"
+    },
+    {
+      "item_id": "INV-ENG-AL31",
+      "item_name": "Saturn AL-31FP Thrust-Vectoring Engine",
+      "category": "PROPULSION_SPARE",
+      "airbase_id": "BASE_VAYU",
+      "quantity_on_hand": 2,
+      "reserved_quantity": 0,
+      "unit": "UNITS",
+      "reorder_threshold": 2,
+      "supplier_lead_time_days": 21,
+      "last_audit": "2026-10-04T11:30:00Z",
+      "status": "LOW_STOCK"
+    },
+    {
+      "item_id": "INV-RAD-UTTAM",
+      "item_name": "Uttam AESA Solid-State T/R Module Kit",
+      "category": "AVIONICS_LRU",
+      "airbase_id": "BASE_SHAKTI",
+      "quantity_on_hand": 1,
+      "reserved_quantity": 1,
+      "unit": "KITS",
+      "reorder_threshold": 3,
+      "supplier_lead_time_days": 14,
+      "last_audit": "2026-10-06T15:00:00Z",
+      "status": "CRITICAL_REORDER"
+    },
+    {
+      "item_id": "INV-HYD-5606",
+      "item_name": "MIL-PRF-5606H Synthetic Aviation Hydraulic Fluid",
+      "category": "HYDRAULIC_FLUID",
+      "airbase_id": "BASE_TRISHUL",
+      "quantity_on_hand": 45,
+      "reserved_quantity": 10,
+      "unit": "BARRELS",
+      "reorder_threshold": 20,
+      "supplier_lead_time_days": 5,
+      "last_audit": "2026-10-06T12:00:00Z",
+      "status": "ADEQUATE"
+    },
+    {
+      "item_id": "INV-HYD-5606-GAR",
+      "item_name": "MIL-PRF-5606H Synthetic Aviation Hydraulic Fluid",
+      "category": "HYDRAULIC_FLUID",
+      "airbase_id": "BASE_GARUDA",
+      "quantity_on_hand": 14,
+      "reserved_quantity": 8,
+      "unit": "BARRELS",
+      "reorder_threshold": 15,
+      "supplier_lead_time_days": 5,
+      "last_audit": "2026-10-05T16:00:00Z",
+      "status": "LOW_STOCK"
+    },
+    {
+      "item_id": "INV-OXY-LOX-VAYU",
+      "item_name": "High-Purity Aviator Breathing LOX Canister 50L",
+      "category": "OXYGEN_CANISTER",
+      "airbase_id": "BASE_VAYU",
+      "quantity_on_hand": 38,
+      "reserved_quantity": 6,
+      "unit": "CANISTERS",
+      "reorder_threshold": 15,
+      "supplier_lead_time_days": 4,
+      "last_audit": "2026-10-06T10:00:00Z",
+      "status": "ADEQUATE"
+    },
+    {
+      "item_id": "INV-GSE-STARTER",
+      "item_name": "Mobile Gas-Turbine Starter Cart (GSE-12)",
+      "category": "GROUND_SUPPORT_EQUIPMENT",
+      "airbase_id": "BASE_MARUT",
+      "quantity_on_hand": 4,
+      "reserved_quantity": 2,
+      "unit": "UNITS",
+      "reorder_threshold": 3,
+      "supplier_lead_time_days": 30,
+      "last_audit": "2026-10-03T14:00:00Z",
+      "status": "ADEQUATE"
+    },
+    {
+      "item_id": "INV-GSE-TUG-VAR",
+      "item_name": "Deck Tow-Tractor & Aircraft Towbar Assembly",
+      "category": "GROUND_SUPPORT_EQUIPMENT",
+      "airbase_id": "BASE_VARUN",
+      "quantity_on_hand": 2,
+      "reserved_quantity": 1,
+      "unit": "UNITS",
+      "reorder_threshold": 2,
+      "supplier_lead_time_days": 25,
+      "last_audit": "2026-10-04T08:30:00Z",
+      "status": "LOW_STOCK"
+    },
+    {
+      "item_id": "INV-MUN-FUSE-PGB",
+      "item_name": "FMU-152 Programmable Digital Impact Bomb Fuze",
+      "category": "MUNITION_COMPONENT",
+      "airbase_id": "BASE_TRISHUL",
+      "quantity_on_hand": 62,
+      "reserved_quantity": 12,
+      "unit": "UNITS",
+      "reorder_threshold": 30,
+      "supplier_lead_time_days": 10,
+      "last_audit": "2026-10-06T18:00:00Z",
+      "status": "ADEQUATE"
+    },
+    {
+      "item_id": "INV-MUN-PYRO-CHAF",
+      "item_name": "MJ-10 Tactical Radar Chaff & IR Flare Cartridge 36mm",
+      "category": "MUNITION_COMPONENT",
+      "airbase_id": "BASE_SHAKTI",
+      "quantity_on_hand": 18,
+      "reserved_quantity": 10,
+      "unit": "CASES",
+      "reorder_threshold": 25,
+      "supplier_lead_time_days": 7,
+      "last_audit": "2026-10-07T04:00:00Z",
+      "status": "LOW_STOCK"
+    }
+  ],
+  "approval_requests": [
+    {
+      "approval_id": "APP-2026-001",
+      "proposal_id": "PROP-DIV-TRISHUL-01",
+      "title": "Airbase Trishul Contingency Diversion Protocol to Awantipora",
+      "proposal_type": "CONTINGENCY_DIVERSION",
+      "requesting_agent": "AI_TACTICAL_CONTINGENCY_ENGINE",
+      "reviewer_role_required": "AIR_COMMODORE",
+      "reviewer_id": "OFF-AC-402",
+      "reviewer_role": "AIR_COMMODORE",
+      "status": "APPROVED",
+      "created_at": "2026-10-05T08:30:00Z",
+      "decided_at": "2026-10-05T08:42:15Z",
+      "reviewer_rationale": "Severe weather squall line confirmed by INSAT-3DR meteorological satellite. Safe alternate approved.",
+      "impact_summary": {
+        "affected_aircraft_count": 2,
+        "route_eta_delta_mins": 14.5,
+        "estimated_fuel_burn_liters": 1850.0,
+        "risk_level": "LOW"
+      },
+      "proposal_version": 1
+    },
+    {
+      "approval_id": "APP-2026-002",
+      "proposal_id": "PROP-MAINT-AL31-04",
+      "title": "High-Priority Turbofan Replacement for AC_RAFALE_04 at Garuda",
+      "proposal_type": "MAINTENANCE_SCHEDULE_OVERRIDE",
+      "requesting_agent": "LOGISTICS_RESOURCE_OPTIMIZER",
+      "reviewer_role_required": "WING_COMMANDER",
+      "reviewer_id": null,
+      "reviewer_role": null,
+      "status": "PENDING",
+      "created_at": "2026-10-07T05:15:00Z",
+      "decided_at": null,
+      "reviewer_rationale": null,
+      "impact_summary": {
+        "target_asset": "AC_RAFALE_04",
+        "work_order_id": "WO-2026-042",
+        "projected_downtime_reduction_hours": 12.0,
+        "stock_allocated_from": "BASE_TRISHUL",
+        "risk_level": "LOW"
+      },
+      "proposal_version": 1
+    },
+    {
+      "approval_id": "APP-2026-003",
+      "proposal_id": "PROP-DUTY-EXT-WING14",
+      "title": "Extended Flight Duty Authorization: 14th Strike Wing Pilots",
+      "proposal_type": "FLIGHT_CREW_EXTENSION",
+      "requesting_agent": "SQN_OPS_OFFICER_NORTH",
+      "reviewer_role_required": "WING_COMMANDER",
+      "reviewer_id": "OFF-WC-112",
+      "reviewer_role": "WING_COMMANDER",
+      "status": "REJECTED",
+      "created_at": "2026-10-06T14:10:00Z",
+      "decided_at": "2026-10-06T14:35:00Z",
+      "reviewer_rationale": "Fatigue risk index exceeds safety envelope (cumulative flight hours > 6.5h within 24h window). Standard rest mandatory.",
+      "impact_summary": {
+        "affected_pilots": [
+          "PLT_004",
+          "PLT_009"
+        ],
+        "requested_extension_hours": 2.5,
+        "fatigue_risk_index": 78.4,
+        "risk_level": "HIGH"
+      },
+      "proposal_version": 1
+    },
+    {
+      "approval_id": "APP-2026-004",
+      "proposal_id": "PROP-REALLOC-PGB-SHAKTI",
+      "title": "Emergency Munitions Redistribution: SPICE-2000 to Base Shakti",
+      "proposal_type": "RESOURCE_REALLOCATION",
+      "requesting_agent": "ORDNANCE_DISPATCH_PLANNER",
+      "reviewer_role_required": "SENIOR_OPS_OFFICER",
+      "reviewer_id": null,
+      "reviewer_role": null,
+      "status": "PENDING",
+      "created_at": "2026-10-07T05:50:00Z",
+      "decided_at": null,
+      "reviewer_rationale": null,
+      "impact_summary": {
+        "item": "WEP_SPICE_2000",
+        "quantity": 4,
+        "donor_base": "BASE_GARUDA",
+        "recipient_base": "BASE_SHAKTI",
+        "transport_mode": "CH-47F Heavy Lift",
+        "risk_level": "MEDIUM"
+      },
+      "proposal_version": 1
+    }
+  ]
+}
