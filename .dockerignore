@@ -1,0 +1,12 @@
+.git
+.github
+.vscode
+.pytest_cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+AirPower/frontend/node_modules
+AirPower/frontend/dist
+.env
+.DS_Store
