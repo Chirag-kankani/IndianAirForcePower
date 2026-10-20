@@ -192,13 +192,15 @@ export function App() {
     []
   );
 
+  const handleWeatherUpdate = useCallback(() => {
+    loadWeather();
+    loadState();
+  }, [loadWeather, loadState]);
+
   const { status: wsStatus } = useTacticalWebSocket({
     onStateUpdate: handleStateUpdate,
     onEventAlert: handleEventAlert,
-    onWeatherUpdate: () => {
-      loadWeather();
-      loadState();
-    },
+    onWeatherUpdate: handleWeatherUpdate,
   });
 
   // Action: Generate Plan
@@ -261,6 +263,36 @@ export function App() {
       alert(`Failed to close mission: ${err.message}`);
     } finally {
       setIsClosingMission(false);
+    }
+  };
+
+  // Action: 1-Click / Voice Scramble Mission
+  const handleQuickLaunchMission = async (targetId?: string) => {
+    setIsProcessingEvent(true);
+    try {
+      const tgtId =
+        targetId ||
+        selectedTargetId ||
+        state?.mission_targets[0]?.target_id ||
+        'TGT_ALPHA_BUNKER';
+      setSelectedTargetId(tgtId);
+      const planRes = await planMission({ target_id: tgtId, priority_level: 5 });
+      setPlanResult(planRes);
+      if (planRes.packages && planRes.packages.length > 0) {
+        const pkg = planRes.packages[0];
+        setSelectedPackage(pkg);
+        const deployed = await deployPackage(pkg.package_id);
+        await loadState();
+        setPlanResult(null);
+        setSelectedPackage(null);
+        if (deployed?.mission_id) {
+          setSelectedActiveMissionId(deployed.mission_id);
+        }
+      }
+    } catch (err: any) {
+      alert(`Mission launch failed: ${err.message}`);
+    } finally {
+      setIsProcessingEvent(false);
     }
   };
 
@@ -474,6 +506,8 @@ export function App() {
               onTriggerEvent={handleTriggerEvent}
               onResetScenario={handleResetScenario}
               onAutoDemo={handleAutoDemo}
+              onLaunchMission={handleQuickLaunchMission}
+              activeMissionsCount={state.active_missions.length}
               isProcessing={isProcessingEvent}
               isAutoRunning={isAutoRunning}
               airbases={state.airbases}

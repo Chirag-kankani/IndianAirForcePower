@@ -22,6 +22,12 @@ import {
   Wind,
   EyeOff,
   CloudSun,
+  Mic,
+  MicOff,
+  Volume2,
+  VolumeX,
+  Terminal,
+  Plane,
 } from 'lucide-react';
 import type { Airbase, EventType, WeatherScenarioType } from '../types';
 import { injectWeatherScenario, resetWeatherScenario } from '../services/api';
@@ -30,6 +36,8 @@ interface DemoControllerProps {
   onTriggerEvent: (eventType: EventType, payload?: Record<string, any>) => void;
   onResetScenario: () => void;
   onAutoDemo?: () => void;
+  onLaunchMission?: () => Promise<void>;
+  activeMissionsCount?: number;
   isProcessing: boolean;
   isAutoRunning?: boolean;
   airbases?: Airbase[];
@@ -42,6 +50,8 @@ export const DemoController: React.FC<DemoControllerProps> = ({
   onTriggerEvent,
   onResetScenario,
   onAutoDemo,
+  onLaunchMission,
+  activeMissionsCount = 0,
   isProcessing,
   isAutoRunning,
   airbases = [],
@@ -91,24 +101,29 @@ export const DemoController: React.FC<DemoControllerProps> = ({
     return () => document.removeEventListener('mousedown', handler);
   }, [showWeatherPicker]);
 
-  const handleInjectWeather = async () => {
-    if (!selectedWeatherAirbase) return;
+  const injectSpecificWeather = async (scenario: WeatherScenarioType, baseId?: string) => {
+    const targetBase = baseId || selectedWeatherAirbase || airbases[0]?.id || 'BASE_TRISHUL';
     setIsWeatherInjecting(true);
     setWeatherNotice(null);
     try {
-      await injectWeatherScenario(selectedWeatherAirbase, selectedWeatherScenario);
-      setWeatherNotice(`Injected ${selectedWeatherScenario} at ${selectedWeatherAirbase}`);
+      await injectWeatherScenario(targetBase, scenario);
+      setWeatherNotice(`Injected ${scenario} at ${targetBase}`);
       if (onWeatherUpdated) onWeatherUpdated();
       onTriggerEvent('WEATHER_SCENARIO_INJECTED' as any, {
-        airbase_id: selectedWeatherAirbase,
-        scenario_type: selectedWeatherScenario,
+        airbase_id: targetBase,
+        scenario_type: scenario,
       });
-      setTimeout(() => setShowWeatherPicker(false), 900);
     } catch (err: any) {
       setWeatherNotice(err.message || 'Failed to inject weather hazard');
     } finally {
       setIsWeatherInjecting(false);
     }
+  };
+
+  const handleInjectWeather = async () => {
+    if (!selectedWeatherAirbase) return;
+    await injectSpecificWeather(selectedWeatherScenario, selectedWeatherAirbase);
+    setTimeout(() => setShowWeatherPicker(false), 900);
   };
 
   const handleResetWeather = async () => {
@@ -128,6 +143,552 @@ export const DemoController: React.FC<DemoControllerProps> = ({
       setIsWeatherInjecting(false);
     }
   };
+
+  // ---------------------------------------------------------------------------
+  // Voice Control System (Web Speech API Recognition + Speech Synthesis)
+  // ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Voice Control System (Web Speech API + Synthesizer Voice Note Responses)
+  // ---------------------------------------------------------------------------
+  const [isListening, setIsListening] = useState(false);
+  const isListeningRef = useRef(false);
+  const isSpeakingRef = useRef(false);
+  const recognitionRef = useRef<any>(null);
+  const [voiceFeedback, setVoiceFeedback] = useState<{
+    transcript: string;
+    matchedCommand?: string;
+    isError?: boolean;
+    isInterim?: boolean;
+    isSpeaking?: boolean;
+    spokenText?: string;
+    timestamp: number;
+  } | null>(null);
+  const [showVoiceHelp, setShowVoiceHelp] = useState(false);
+  const [voiceMuted, setVoiceMuted] = useState(false);
+  const voiceTimeoutRef = useRef<any>(null);
+
+  // Web Audio Tactical Beep / Chime Generator (No external files needed)
+  const playChime = (type: 'listen' | 'ack' | 'warn') => {
+    if (voiceMuted) return;
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      const now = ctx.currentTime;
+      if (type === 'listen') {
+        // High-tech radio frequency open beep
+        osc.frequency.setValueAtTime(587.33, now); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.1); // A5
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        osc.start(now);
+        osc.stop(now + 0.18);
+      } else if (type === 'ack') {
+        // Positive tactical acknowledgment chirp (C5 -> G5)
+        osc.frequency.setValueAtTime(523.25, now);
+        osc.frequency.setValueAtTime(783.99, now + 0.08);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        osc.start(now);
+        osc.stop(now + 0.25);
+      } else if (type === 'warn') {
+        // Warning radio pulse
+        osc.frequency.setValueAtTime(340, now);
+        gain.gain.setValueAtTime(0.14, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+        osc.start(now);
+        osc.stop(now + 0.22);
+      }
+    } catch (e) {
+      // Audio fallback
+    }
+  };
+
+  const triggerVoiceFeedback = (data: {
+    transcript: string;
+    matchedCommand?: string;
+    isError?: boolean;
+    isInterim?: boolean;
+    spokenText?: string;
+  }) => {
+    if (voiceTimeoutRef.current) clearTimeout(voiceTimeoutRef.current);
+    setVoiceFeedback((prev) => ({
+      ...prev,
+      ...data,
+      timestamp: Date.now(),
+    }));
+
+    if (!data.isInterim) {
+      voiceTimeoutRef.current = setTimeout(() => {
+        setVoiceFeedback(null);
+      }, 5500);
+    }
+  };
+
+  const speakFeedback = (text: string) => {
+    if (voiceMuted || typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    try {
+      if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+        window.speechSynthesis.cancel();
+      }
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+
+      isSpeakingRef.current = true;
+      setVoiceFeedback((prev) =>
+        prev
+          ? { ...prev, isSpeaking: true, spokenText: text }
+          : { transcript: '', isSpeaking: true, spokenText: text, timestamp: Date.now() }
+      );
+
+      // Brief delay to allow browser speech engine queue reset
+      setTimeout(() => {
+        try {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.rate = 1.0;
+          utterance.pitch = 1.0;
+          utterance.volume = 1.0;
+          utterance.lang = 'en-US';
+
+          const voices = window.speechSynthesis.getVoices();
+          if (voices && voices.length > 0) {
+            const preferred =
+              voices.find(
+                (v) =>
+                  v.lang.startsWith('en') &&
+                  (v.name.includes('Natural') ||
+                    v.name.includes('Google') ||
+                    v.name.includes('Samantha') ||
+                    v.name.includes('David') ||
+                    v.name.includes('Zira'))
+              ) || voices.find((v) => v.lang.startsWith('en'));
+            if (preferred) utterance.voice = preferred;
+          }
+
+          utterance.onend = () => {
+            // Buffer delay after speech finishes to prevent microphone picking up acoustic room echo
+            setTimeout(() => {
+              isSpeakingRef.current = false;
+            }, 600);
+            setVoiceFeedback((prev) => (prev ? { ...prev, isSpeaking: false } : null));
+          };
+          utterance.onerror = () => {
+            isSpeakingRef.current = false;
+            setVoiceFeedback((prev) => (prev ? { ...prev, isSpeaking: false } : null));
+          };
+
+          window.speechSynthesis.speak(utterance);
+        } catch (e) {
+          isSpeakingRef.current = false;
+          console.warn('SpeechSynthesis speak failed:', e);
+        }
+      }, 50);
+    } catch (e) {
+      isSpeakingRef.current = false;
+      console.warn('SpeechSynthesis error:', e);
+    }
+  };
+
+  const parseVoiceCommand = (rawTranscript: string) => {
+    const text = rawTranscript.toLowerCase().trim();
+    if (!text) return;
+
+    // 0. Mission Launch, Planning & Scramble Sorties
+    if (
+      text.includes('launch mission') ||
+      text.includes('start mission') ||
+      text.includes('deploy mission') ||
+      text.includes('deploy sortie') ||
+      text.includes('scramble') ||
+      text.includes('strike target') ||
+      text.includes('attack target') ||
+      text.includes('plan mission') ||
+      text.includes('optimize mission') ||
+      text.includes('fly mission') ||
+      text.includes('launch sortie') ||
+      text.includes('scramble fighter')
+    ) {
+      playChime('ack');
+      const voiceNote = 'Acknowledged: Planning optimal sortie package and scrambling fighter. Mission is now airborne on the map.';
+      triggerVoiceFeedback({
+        transcript: rawTranscript,
+        matchedCommand: 'SCRAMBLE FIGHTER SORTIE',
+        spokenText: voiceNote,
+      });
+      speakFeedback(voiceNote);
+      if (onLaunchMission) {
+        onLaunchMission();
+      }
+      return;
+    }
+
+    // 1. SAM Threat Injections
+    if (
+      text.includes('sam') ||
+      text.includes('missile') ||
+      text.includes('battery') ||
+      text.includes('radar threat') ||
+      text.includes('s400') ||
+      text.includes('s-400')
+    ) {
+      playChime('ack');
+      const voiceNote = 'Threat alert acknowledged: Pop-up S-400 radar threat zone injected into theatre. Sorties are actively rerouting.';
+      triggerVoiceFeedback({
+        transcript: rawTranscript,
+        matchedCommand: 'SPAWN SAM RADAR BATTERY',
+        spokenText: voiceNote,
+      });
+      speakFeedback(voiceNote);
+
+      const injectSam = () => {
+        handleAction('SAM', 'NEW_THREAT_ZONE', {
+          name: 'Pop-Up S-400 Battery Sector',
+          type: 'SAM_RADAR_BATTERY',
+          lat: 31.15,
+          lng: 75.35,
+          radius_km: 65.0,
+          severity: 5,
+        });
+      };
+
+      // If no missions are currently airborne, launch a fighter first so the evasive detour is immediately visible!
+      if (activeMissionsCount === 0 && onLaunchMission) {
+        onLaunchMission().then(() => {
+          setTimeout(injectSam, 1200);
+        });
+      } else {
+        injectSam();
+      }
+      return;
+    }
+
+    // 2. Weather Hazards
+    if (text.includes('thunderstorm') || text.includes('squall') || text.includes('microburst')) {
+      playChime('ack');
+      const voiceNote = 'Weather alert acknowledged: Severe convective squall line and microburst active across airbases.';
+      triggerVoiceFeedback({
+        transcript: rawTranscript,
+        matchedCommand: 'INJECT THUNDERSTORM SQUALL',
+        spokenText: voiceNote,
+      });
+      speakFeedback(voiceNote);
+      setSelectedWeatherScenario('THUNDERSTORM_SQUALL');
+      injectSpecificWeather('THUNDERSTORM_SQUALL');
+      return;
+    }
+
+    if (text.includes('gale') || text.includes('wind') || text.includes('crosswind')) {
+      playChime('ack');
+      const voiceNote = 'Weather alert acknowledged: High-velocity gale crosswinds active across airfield.';
+      triggerVoiceFeedback({
+        transcript: rawTranscript,
+        matchedCommand: 'INJECT GALE CROSSWINDS',
+        spokenText: voiceNote,
+      });
+      speakFeedback(voiceNote);
+      setSelectedWeatherScenario('GALE_WINDS');
+      injectSpecificWeather('GALE_WINDS');
+      return;
+    }
+
+    if (text.includes('monsoon') || text.includes('rain') || text.includes('downpour')) {
+      playChime('ack');
+      const voiceNote = 'Weather alert acknowledged: Monsoon downpour and heavy precipitation active.';
+      triggerVoiceFeedback({
+        transcript: rawTranscript,
+        matchedCommand: 'INJECT MONSOON DOWNPOUR',
+        spokenText: voiceNote,
+      });
+      speakFeedback(voiceNote);
+      setSelectedWeatherScenario('MONSOON_DOWNPOUR');
+      injectSpecificWeather('MONSOON_DOWNPOUR');
+      return;
+    }
+
+    if (text.includes('fog') || text.includes('visibility') || text.includes('mist')) {
+      playChime('ack');
+      const voiceNote = 'Weather alert acknowledged: Dense radiation fog with Category 3 visibility active.';
+      triggerVoiceFeedback({
+        transcript: rawTranscript,
+        matchedCommand: 'INJECT DENSE RADIATION FOG',
+        spokenText: voiceNote,
+      });
+      speakFeedback(voiceNote);
+      setSelectedWeatherScenario('DENSE_FOG');
+      injectSpecificWeather('DENSE_FOG');
+      return;
+    }
+
+    if (text.includes('clear weather') || text.includes('reset weather') || text.includes('normal weather') || text.includes('restore weather')) {
+      playChime('ack');
+      const voiceNote = 'Acknowledged: Restoring live real-time Open-Meteo observations.';
+      triggerVoiceFeedback({
+        transcript: rawTranscript,
+        matchedCommand: 'RESTORE METEO OBSERVATIONS',
+        spokenText: voiceNote,
+      });
+      speakFeedback(voiceNote);
+      handleResetWeather();
+      return;
+    }
+
+    if (text.includes('weather') || text.includes('hazard')) {
+      playChime('ack');
+      const voiceNote = `Weather hazard injected: Scenario ${selectedWeatherScenario.toLowerCase().replace('_', ' ')} active.`;
+      triggerVoiceFeedback({
+        transcript: rawTranscript,
+        matchedCommand: `INJECT WEATHER (${selectedWeatherScenario})`,
+        spokenText: voiceNote,
+      });
+      speakFeedback(voiceNote);
+      injectSpecificWeather(selectedWeatherScenario);
+      return;
+    }
+
+    // 3. Runway Lockout
+    if (text.includes('lock runway') || text.includes('block runway') || text.includes('close runway') || text.includes('runway lockout')) {
+      let targetBase = airbases[0]?.id || 'BASE_TRISHUL';
+      if (text.includes('shakti')) {
+        const b = airbases.find((ab) => ab.name.toLowerCase().includes('shakti') || ab.id.includes('SHAKTI'));
+        if (b) targetBase = b.id;
+      } else if (text.includes('trishul')) {
+        const b = airbases.find((ab) => ab.name.toLowerCase().includes('trishul') || ab.id.includes('TRISHUL'));
+        if (b) targetBase = b.id;
+      } else if (text.includes('garuda')) {
+        const b = airbases.find((ab) => ab.name.toLowerCase().includes('garuda') || ab.id.includes('GARUDA'));
+        if (b) targetBase = b.id;
+      } else if (text.includes('vayu')) {
+        const b = airbases.find((ab) => ab.name.toLowerCase().includes('vayu') || ab.id.includes('VAYU'));
+        if (b) targetBase = b.id;
+      }
+      playChime('ack');
+      const voiceNote = `Runway lockout acknowledged: ${targetBase.replace('BASE_', '')} runway is closed. Diverting airborne sorties.`;
+      triggerVoiceFeedback({
+        transcript: rawTranscript,
+        matchedCommand: `LOCK RUNWAY [${targetBase.replace('BASE_', '')}]`,
+        spokenText: voiceNote,
+      });
+      speakFeedback(voiceNote);
+
+      const doLock = () => handleLockRunway(targetBase);
+      if (activeMissionsCount === 0 && onLaunchMission) {
+        onLaunchMission().then(() => {
+          setTimeout(doLock, 1200);
+        });
+      } else {
+        doLock();
+      }
+      return;
+    }
+
+    // 4. Aircraft Engine Fault
+    if (text.includes('engine') || text.includes('flameout') || text.includes('turbine') || text.includes('failure') || text.includes('fault')) {
+      playChime('warn');
+      const voiceNote = 'In-flight emergency acknowledged: Turbine failure injected. Emergency recovery initiated.';
+      triggerVoiceFeedback({
+        transcript: rawTranscript,
+        matchedCommand: 'INJECT ENGINE FAULT EMERGENCY',
+        spokenText: voiceNote,
+      });
+      speakFeedback(voiceNote);
+
+      const doFault = () => handleAction('FAULT', 'AIRCRAFT_FAILURE', {});
+      if (activeMissionsCount === 0 && onLaunchMission) {
+        onLaunchMission().then(() => {
+          setTimeout(doFault, 1200);
+        });
+      } else {
+        doFault();
+      }
+      return;
+    }
+
+    // 5. 1-Click Autonomous Demo
+    if (text.includes('demo') || text.includes('simulation') || text.includes('start demo') || text.includes('run demo') || text.includes('launch demo')) {
+      playChime('ack');
+      const voiceNote = 'Autonomous presentation sequence initiated. Executing end-to-end tactical simulation.';
+      triggerVoiceFeedback({
+        transcript: rawTranscript,
+        matchedCommand: 'EXECUTING 1-CLICK DEMO',
+        spokenText: voiceNote,
+      });
+      speakFeedback(voiceNote);
+      if (onAutoDemo) onAutoDemo();
+      return;
+    }
+
+    // 6. Reset
+    if (text.includes('reset') || text.includes('restart') || text.includes('clear all') || text.includes('abort')) {
+      playChime('ack');
+      const voiceNote = 'Reset command acknowledged. Restoring all assets, runways, and airbases to baseline readiness.';
+      triggerVoiceFeedback({
+        transcript: rawTranscript,
+        matchedCommand: 'TACTICAL SCENARIO RESET',
+        spokenText: voiceNote,
+      });
+      speakFeedback(voiceNote);
+      onResetScenario();
+      return;
+    }
+
+    // 7. Delta / Comparison
+    if (text.includes('compare') || text.includes('delta') || text.includes('results')) {
+      playChime('ack');
+      const voiceNote = 'Acknowledged: Opening before and after delta comparison report.';
+      triggerVoiceFeedback({
+        transcript: rawTranscript,
+        matchedCommand: 'OPEN DELTA COMPARISON',
+        spokenText: voiceNote,
+      });
+      speakFeedback(voiceNote);
+      if (onOpenScenarioComparison) onOpenScenarioComparison();
+      return;
+    }
+
+    // 8. Help Cheatsheet
+    if (text.includes('help') || text.includes('commands') || text.includes('options')) {
+      playChime('ack');
+      const voiceNote = 'Opening tactical voice commands directory.';
+      setShowVoiceHelp(true);
+      triggerVoiceFeedback({
+        transcript: rawTranscript,
+        matchedCommand: 'OPENING VOICE COMMANDS CHEATSHEET',
+        spokenText: voiceNote,
+      });
+      speakFeedback(voiceNote);
+      return;
+    }
+
+    // Unrecognized phrase — speak audible acknowledgment of what was heard and suggest commands!
+    playChime('warn');
+    const fallbackNote = `Voice heard: "${rawTranscript}". Command not recognized. Say launch mission, spawn SAM, or help.`;
+    triggerVoiceFeedback({
+      transcript: rawTranscript,
+      matchedCommand: 'UNRECOGNIZED (Say "Launch mission" or "Spawn SAM")',
+      isError: true,
+      spokenText: fallbackNote,
+    });
+    speakFeedback(fallbackNote);
+  };
+
+  const toggleVoiceControl = () => {
+    const SpeechRec = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRec) {
+      alert('Voice Control requires a browser that supports the Web Speech API (such as Google Chrome or Microsoft Edge).');
+      return;
+    }
+
+    if (isListening) {
+      isListeningRef.current = false;
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {}
+      }
+      setIsListening(false);
+      triggerVoiceFeedback({
+        transcript: 'Voice control paused',
+      });
+      return;
+    }
+
+    // Play tactile activation tone ONCE when the user clicks the button
+    playChime('listen');
+    triggerVoiceFeedback({
+      transcript: 'Listening... (Speak "Launch mission", "Spawn SAM", "Thunderstorm")',
+    });
+
+    try {
+      const recognition = new SpeechRec();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+
+      // onstart only updates state — NEVER speaks out loud so it cannot trigger an infinite audio loop!
+      recognition.onstart = () => {
+        isListeningRef.current = true;
+        setIsListening(true);
+      };
+
+      recognition.onresult = (event: any) => {
+        // If the system is currently speaking out of the speakers, ignore to prevent acoustic feedback loop!
+        if (isSpeakingRef.current) return;
+
+        let interimText = '';
+        let finalText = '';
+
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalText += event.results[i][0].transcript;
+          } else {
+            interimText += event.results[i][0].transcript;
+          }
+        }
+
+        if (interimText && !finalText) {
+          triggerVoiceFeedback({
+            transcript: interimText,
+            isInterim: true,
+          });
+        }
+
+        if (finalText.trim()) {
+          parseVoiceCommand(finalText.trim());
+        }
+      };
+
+      recognition.onerror = (event: any) => {
+        console.warn('Speech recognition error:', event.error);
+        if (event.error === 'not-allowed') {
+          alert('Microphone access was denied. Please allow microphone permissions in your browser to use Voice Control.');
+          isListeningRef.current = false;
+          setIsListening(false);
+        }
+      };
+
+      recognition.onend = () => {
+        // Debounce before restarting recognition to keep Chrome audio subsystem stable
+        if (isListeningRef.current) {
+          setTimeout(() => {
+            if (isListeningRef.current && recognitionRef.current) {
+              try {
+                recognitionRef.current.start();
+              } catch (e) {
+                // Ignore if already active
+              }
+            }
+          }, 300);
+        } else {
+          setIsListening(false);
+        }
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } catch (err: any) {
+      alert('Failed to start voice control: ' + err.message);
+      setIsListening(false);
+      isListeningRef.current = false;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      isListeningRef.current = false;
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {}
+      }
+      if (voiceTimeoutRef.current) clearTimeout(voiceTimeoutRef.current);
+    };
+  }, []);
 
   const handleAction = async (actionKey: string, eventType: EventType, payload: Record<string, any> = {}) => {
     if (isProcessing || isAutoRunning) return;
@@ -167,6 +728,62 @@ export const DemoController: React.FC<DemoControllerProps> = ({
 
   return (
     <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-[400] select-none font-mono text-xs max-w-fit w-auto pointer-events-auto">
+      {/* Voice Recognition Floating HUD Feedback */}
+      {voiceFeedback && (
+        <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 pointer-events-none select-none z-[500] whitespace-nowrap animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <div
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full border shadow-2xl backdrop-blur-md ${
+              voiceFeedback.isError
+                ? 'bg-rose-950/90 border-rose-500/60 text-rose-200 shadow-rose-900/30'
+                : voiceFeedback.matchedCommand
+                ? 'bg-emerald-950/90 border-emerald-400/60 text-emerald-200 shadow-emerald-900/30 ring-1 ring-emerald-400/30'
+                : voiceFeedback.isInterim
+                ? 'bg-amber-950/90 border-amber-400/60 text-amber-200 shadow-amber-900/30'
+                : 'bg-sky-950/90 border-sky-400/60 text-sky-200 shadow-sky-900/30'
+            }`}
+          >
+            {voiceFeedback.isError ? (
+              <AlertTriangle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+            ) : voiceFeedback.matchedCommand ? (
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 animate-bounce" />
+            ) : voiceFeedback.isInterim ? (
+              <Radio className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-pulse" />
+            ) : (
+              <Radio className="w-3.5 h-3.5 text-sky-400 shrink-0 animate-pulse" />
+            )}
+
+            <div className="flex items-center gap-2 text-[11px] font-mono">
+              {voiceFeedback.isInterim ? (
+                <span>
+                  <span className="opacity-70 text-amber-300">Hearing: </span>
+                  <span className="font-semibold text-white italic">"{voiceFeedback.transcript}..."</span>
+                </span>
+              ) : (
+                <span>
+                  <span className="opacity-70">Heard: </span>
+                  <span className="font-semibold text-white">"{voiceFeedback.transcript}"</span>
+                  {voiceFeedback.matchedCommand && (
+                    <span className="ml-2 px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40 text-[10px]">
+                      ➔ {voiceFeedback.matchedCommand}
+                    </span>
+                  )}
+                </span>
+              )}
+
+              {/* Spoken Voice Note confirmation badge */}
+              {voiceFeedback.spokenText && (
+                <div className="flex items-center gap-1.5 pl-2 border-l border-sky-400/30 text-[10.5px]">
+                  <Volume2 className="w-3.5 h-3.5 text-cyan-300 animate-pulse shrink-0" />
+                  <span className="text-cyan-200 font-sans font-semibold">
+                    Voice Note: <span className="text-white font-normal italic">"{voiceFeedback.spokenText}"</span>
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="glass-panel-floating px-3.5 py-1.5 rounded-2xl border border-sky-400/40 shadow-[0_12px_40px_rgba(2,132,199,0.3)] flex items-center gap-2 backdrop-blur-xl">
         {/* Badge & Operational Indicator */}
         <div className="flex items-center gap-2 pr-2.5 border-r border-sky-500/25 shrink-0">
@@ -188,6 +805,47 @@ export const DemoController: React.FC<DemoControllerProps> = ({
               {isAutoRunning ? 'RUNNING' : isProcessing ? 'ACTIVE' : 'READY'}
             </span>
           </span>
+        </div>
+
+        {/* Tactical Voice Control Toggle */}
+        <div className="flex items-center gap-1 pr-2 border-r border-sky-500/25 shrink-0">
+          <button
+            onClick={toggleVoiceControl}
+            className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border shrink-0 active:scale-95 ${
+              isListening
+                ? 'bg-rose-500/25 border-rose-400 text-rose-200 ring-2 ring-rose-500/40 shadow-[0_0_15px_rgba(244,63,94,0.4)] animate-pulse'
+                : 'bg-sky-500/15 hover:bg-sky-500/25 border-sky-500/40 text-sky-200 hover:border-sky-400 shadow-[0_0_10px_rgba(2,132,199,0.2)]'
+            }`}
+            title={
+              isListening
+                ? 'Voice Recognition Active - Click to Stop'
+                : 'Activate Tactical Voice Control (Control SAMs, Weather, Runways, Engines)'
+            }
+          >
+            {isListening ? (
+              <>
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                </span>
+                <Mic className="w-3.5 h-3.5 text-rose-300 animate-bounce" />
+                <span className="text-[11px] font-sans font-bold tracking-tight">LISTENING</span>
+              </>
+            ) : (
+              <>
+                <Mic className="w-3.5 h-3.5 text-sky-300" />
+                <span className="text-[11px] font-sans font-bold tracking-tight">VOICE</span>
+              </>
+            )}
+          </button>
+
+          <button
+            onClick={() => setShowVoiceHelp(true)}
+            className="p-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-sky-500/30 hover:border-sky-400 text-sky-300 hover:text-white transition-all cursor-pointer shrink-0"
+            title="View Tactical Voice Commands Guide & Test Phrases"
+          >
+            <HelpCircle className="w-3.5 h-3.5" />
+          </button>
         </div>
 
         {/* 1. Runway Lockout Popover */}
@@ -592,6 +1250,268 @@ export const DemoController: React.FC<DemoControllerProps> = ({
                   className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-black cursor-pointer shadow-md transition-colors"
                 >
                   Confirm Reset
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
+
+      {/* Tactical Voice Commands Directory Modal (Portaled to document.body) */}
+      {showVoiceHelp &&
+        createPortal(
+          <div
+            onClick={() => setShowVoiceHelp(false)}
+            className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-md flex items-center justify-center p-4 select-none animate-in fade-in duration-200"
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-2xl glass-panel p-6 rounded-2xl border border-sky-400/50 shadow-[0_20px_60px_rgba(2,132,199,0.35)] space-y-4 font-mono text-xs animate-in zoom-in-95 duration-150 bg-slate-950/95 max-h-[90vh] overflow-y-auto"
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between text-sky-400 font-bold border-b border-sky-500/25 pb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 rounded-xl bg-sky-500/20 border border-sky-400/40 text-sky-300">
+                    <Mic className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-sans font-extrabold text-white tracking-wide">
+                      TACTICAL VOICE COMMAND DIRECTORY
+                    </h3>
+                    <p className="text-[11px] font-mono text-sky-300/80 font-normal">
+                      Hands-free simulation injection via browser speech recognition
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setVoiceMuted((v) => !v)}
+                    className={`p-1.5 rounded-lg border text-xs flex items-center gap-1.5 transition-colors cursor-pointer ${
+                      voiceMuted
+                        ? 'bg-rose-950/80 border-rose-500/40 text-rose-300'
+                        : 'bg-sky-950/80 border-sky-500/40 text-sky-300'
+                    }`}
+                    title={voiceMuted ? 'Voice audio synthesis muted' : 'Voice audio synthesis enabled'}
+                  >
+                    {voiceMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                    <span className="text-[10px]">{voiceMuted ? 'Muted' : 'Audio On'}</span>
+                  </button>
+
+                  <button
+                    onClick={() => setShowVoiceHelp(false)}
+                    className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Status and Instructions Banner */}
+              <div className="p-3 rounded-xl bg-sky-950/40 border border-sky-500/30 text-sky-200 text-[11px] font-sans flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-2 w-2">
+                    <span
+                      className={`animate-ping absolute inline-flex h-full w-full rounded-full ${
+                        isListening ? 'bg-rose-400' : 'bg-sky-400'
+                      } opacity-75`}
+                    ></span>
+                    <span
+                      className={`relative inline-flex rounded-full h-2 w-2 ${
+                        isListening ? 'bg-rose-500' : 'bg-sky-400'
+                      }`}
+                    ></span>
+                  </span>
+                  <span>
+                    Status:{' '}
+                    <strong className="text-white">
+                      {isListening ? 'LISTENING TO MICROPHONE' : 'STANDBY (Click VOICE in Injector to activate)'}
+                    </strong>
+                  </span>
+                </div>
+                <span className="text-[10px] text-sky-300/70 font-mono">Tip: Click any phrase below to test</span>
+              </div>
+
+              {/* Commands Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {/* 0. Mission Launch & Scramble Sorties */}
+                <div className="p-3.5 rounded-xl bg-slate-900/70 border border-sky-400/40 space-y-2 md:col-span-2 bg-gradient-to-r from-sky-950/40 via-cyan-950/30 to-slate-900/70">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-sky-300 font-bold text-xs uppercase tracking-wide">
+                      <Plane className="w-3.5 h-3.5 text-sky-400" />
+                      <span>Mission Launch & Sortie Scramble</span>
+                    </div>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/40 font-bold">
+                      HIGH PRIORITY
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 font-sans">
+                    Instantly calculates CP-SAT optimal fighter sortie package and deploys live aircraft onto the tactical map.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+                    {[
+                      { phrase: 'Launch mission', action: 'CP-SAT Sortie Scramble' },
+                      { phrase: 'Strike target Alpha', action: 'Deep-Strike Penetration' },
+                      { phrase: 'Scramble fighter', action: 'Immediate Takeoff' },
+                    ].map((item) => (
+                      <button
+                        key={item.phrase}
+                        onClick={() => {
+                          setShowVoiceHelp(false);
+                          parseVoiceCommand(item.phrase);
+                        }}
+                        className="text-left px-2.5 py-1.5 rounded-lg bg-slate-950/80 hover:bg-sky-950/60 border border-sky-500/30 hover:border-sky-400 text-slate-200 hover:text-white transition-all flex items-center justify-between group cursor-pointer shadow-sm"
+                      >
+                        <span className="font-mono text-sky-200 group-hover:text-sky-100 font-semibold text-[11px]">
+                          "{item.phrase}"
+                        </span>
+                        <span className="text-[10px] text-slate-400 group-hover:text-sky-300 font-bold">Run ➔</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 1. SAM Threat Injections */}
+                <div className="p-3.5 rounded-xl bg-slate-900/70 border border-rose-500/30 space-y-2">
+                  <div className="flex items-center gap-2 text-rose-300 font-bold text-xs uppercase tracking-wide">
+                    <Radio className="w-3.5 h-3.5" />
+                    <span>SAM Threat Injections</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 font-sans">
+                    Instantly deploys pop-up surface-to-air missile threat zones with radar engagement radius.
+                  </p>
+                  <div className="space-y-1.5 pt-1">
+                    {[
+                      { phrase: 'Spawn SAM battery', action: 'Pop-Up S-400 Battery Sector' },
+                      { phrase: 'Deploy missile threat', action: 'SAM Radar Battery' },
+                      { phrase: 'Spawn S-400 radar', action: 'High-altitude denial zone' },
+                    ].map((item) => (
+                      <button
+                        key={item.phrase}
+                        onClick={() => {
+                          setShowVoiceHelp(false);
+                          parseVoiceCommand(item.phrase);
+                        }}
+                        className="w-full text-left px-2.5 py-1.5 rounded-lg bg-slate-950/80 hover:bg-rose-950/40 border border-rose-500/20 hover:border-rose-400 text-slate-200 hover:text-white transition-all flex items-center justify-between group cursor-pointer"
+                      >
+                        <span className="font-mono text-rose-200 group-hover:text-rose-100 font-semibold">
+                          "{item.phrase}"
+                        </span>
+                        <span className="text-[10px] text-slate-400 group-hover:text-rose-300">Run ➔</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 2. Severe Weather Hazards */}
+                <div className="p-3.5 rounded-xl bg-slate-900/70 border border-cyan-500/30 space-y-2">
+                  <div className="flex items-center gap-2 text-cyan-300 font-bold text-xs uppercase tracking-wide">
+                    <CloudLightning className="w-3.5 h-3.5" />
+                    <span>Weather Hazards</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 font-sans">
+                    Inject convective squalls, gale crosswinds, monsoons, or radiation fog across airbases.
+                  </p>
+                  <div className="space-y-1.5 pt-1">
+                    {[
+                      { phrase: 'Thunderstorm squall', action: 'Squall line + microburst' },
+                      { phrase: 'Gale winds', action: '48kt crosswinds' },
+                      { phrase: 'Monsoon downpour', action: 'Heavy precipitation' },
+                      { phrase: 'Dense fog', action: 'CAT-III low visibility' },
+                      { phrase: 'Clear weather', action: 'Live Open-Meteo observations' },
+                    ].map((item) => (
+                      <button
+                        key={item.phrase}
+                        onClick={() => {
+                          setShowVoiceHelp(false);
+                          parseVoiceCommand(item.phrase);
+                        }}
+                        className="w-full text-left px-2.5 py-1.5 rounded-lg bg-slate-950/80 hover:bg-cyan-950/40 border border-cyan-500/20 hover:border-cyan-400 text-slate-200 hover:text-white transition-all flex items-center justify-between group cursor-pointer"
+                      >
+                        <span className="font-mono text-cyan-200 group-hover:text-cyan-100 font-semibold">
+                          "{item.phrase}"
+                        </span>
+                        <span className="text-[10px] text-slate-400 group-hover:text-cyan-300">Run ➔</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 3. Airbase & Sortie Emergencies */}
+                <div className="p-3.5 rounded-xl bg-slate-900/70 border border-amber-500/30 space-y-2">
+                  <div className="flex items-center gap-2 text-amber-300 font-bold text-xs uppercase tracking-wide">
+                    <AlertTriangle className="w-3.5 h-3.5" />
+                    <span>Runways & In-Flight Faults</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 font-sans">
+                    Locks runways to test automated divert re-routing or injects aircraft engine failures.
+                  </p>
+                  <div className="space-y-1.5 pt-1">
+                    {[
+                      { phrase: 'Lock runway Shakti', action: 'Close Shakti AFS runway' },
+                      { phrase: 'Lock runway Trishul', action: 'Close Trishul AFS runway' },
+                      { phrase: 'Engine fault', action: 'Turbine flameout on active sortie' },
+                    ].map((item) => (
+                      <button
+                        key={item.phrase}
+                        onClick={() => {
+                          setShowVoiceHelp(false);
+                          parseVoiceCommand(item.phrase);
+                        }}
+                        className="w-full text-left px-2.5 py-1.5 rounded-lg bg-slate-950/80 hover:bg-amber-950/40 border border-amber-500/20 hover:border-amber-400 text-slate-200 hover:text-white transition-all flex items-center justify-between group cursor-pointer"
+                      >
+                        <span className="font-mono text-amber-200 group-hover:text-amber-100 font-semibold">
+                          "{item.phrase}"
+                        </span>
+                        <span className="text-[10px] text-slate-400 group-hover:text-amber-300">Run ➔</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 4. Autonomous Simulation Workflow */}
+                <div className="p-3.5 rounded-xl bg-slate-900/70 border border-emerald-500/30 space-y-2">
+                  <div className="flex items-center gap-2 text-emerald-300 font-bold text-xs uppercase tracking-wide">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Simulation Workflow</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 font-sans">
+                    Execute the full autonomous presentation sequence or review side-by-side delta metrics.
+                  </p>
+                  <div className="space-y-1.5 pt-1">
+                    {[
+                      { phrase: 'Start 1-click demo', action: 'Autonomous presentation sequence' },
+                      { phrase: 'Delta results', action: 'Open Before/After comparison' },
+                      { phrase: 'Reset simulation', action: 'Restore baseline readiness' },
+                    ].map((item) => (
+                      <button
+                        key={item.phrase}
+                        onClick={() => {
+                          setShowVoiceHelp(false);
+                          parseVoiceCommand(item.phrase);
+                        }}
+                        className="w-full text-left px-2.5 py-1.5 rounded-lg bg-slate-950/80 hover:bg-emerald-950/40 border border-emerald-500/20 hover:border-emerald-400 text-slate-200 hover:text-white transition-all flex items-center justify-between group cursor-pointer"
+                      >
+                        <span className="font-mono text-emerald-200 group-hover:text-emerald-100 font-semibold">
+                          "{item.phrase}"
+                        </span>
+                        <span className="text-[10px] text-slate-400 group-hover:text-emerald-300">Run ➔</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Footer Action */}
+              <div className="flex items-center justify-between pt-3 border-t border-slate-800">
+                <span className="text-slate-400 text-[11px] font-sans">
+                  Voice recognition runs locally in the browser with zero external API calls.
+                </span>
+                <button
+                  onClick={() => setShowVoiceHelp(false)}
+                  className="px-4 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold cursor-pointer transition-colors shadow-md"
+                >
+                  Close Directory
                 </button>
               </div>
             </div>
