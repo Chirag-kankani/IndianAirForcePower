@@ -12,7 +12,7 @@ if sys.platform == "win32":
         pass
 
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, Response, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -78,7 +78,12 @@ app.include_router(assistant_router.router)
 app.include_router(ws_router)
 
 
-@app.get("/health", tags=["Health"])
+@app.head("/", include_in_schema=False)
+async def root_head():
+    return Response(status_code=200)
+
+
+@app.api_route("/health", methods=["GET", "HEAD"], tags=["Health"])
 async def health_check():
     return {"status": "HEALTHY", "state_loaded": state_store.get_snapshot() is not None}
 
@@ -100,16 +105,25 @@ if frontend_dist:
         app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
 
     # Serve index.html and any static files for SPA frontend
-    @app.get("/{full_path:path}", include_in_schema=False)
-    async def serve_frontend(full_path: str):
-        if full_path.startswith(("api", "ws", "docs", "openapi.json", "health")):
-            return None
+    @app.api_route("/{full_path:path}", methods=["GET", "HEAD"], include_in_schema=False)
+    async def serve_frontend(request: Request, full_path: str):
+        if full_path.startswith(("api", "ws", "docs", "openapi.json")):
+            return Response(status_code=404)
+        if request.method == "HEAD":
+            return Response(status_code=200)
+        if full_path in ("", "/") and "text/html" not in request.headers.get("accept", ""):
+            return {
+                "system": "AirPower Decision-Support Platform",
+                "status": "OPERATIONAL",
+                "synthetic_data_badge": "SYNTHETIC DATA – DEMO",
+                "docs": "/docs",
+            }
         file_path = os.path.join(frontend_dist, full_path)
         if os.path.exists(file_path) and os.path.isfile(file_path):
             return FileResponse(file_path)
         return FileResponse(os.path.join(frontend_dist, "index.html"))
 else:
-    @app.get("/", tags=["Health"])
+    @app.api_route("/", methods=["GET", "HEAD"], tags=["Health"])
     async def root():
         return {
             "system": "AirPower Decision-Support Platform",
